@@ -1,0 +1,123 @@
+//HASH TABLE WITH OPEN ADDRESSING
+
+//NAME - SURAJ KUMAR MODI
+//ROLL - 17CS8020
+//DATE OF ASSIGNMENT :01/02/2019
+
+#include<iostream>
+using namespace std;
+
+struct hashing
+{
+	int data;
+	int ispresent;                                 //CHECK FOR EMPTY OR FILLED
+};
+
+void insert(struct hashing *h,int size,int num)
+{
+	int k;
+	k=num%size;
+	if(h[k].ispresent==0)                           //IF FOUND EMPTY PERFORM INSERTION
+	{
+		h[k].data=num;
+		h[k].ispresent=1;
+	}
+	else                                            //IF NOT EMPTY CHECKING FOR NEXT EMPTY
+	{
+		int t=1;
+		while((h[(k+t)%size].ispresent!=0)&&(t<size))  t=t+1;
+		if(t>=size)
+			cout<<"SPACE FULL"<<endl;
+		else
+		{
+			h[(k+t)%size].data=num;                  //IF EMPTY FOUND INSERT
+			h[(k+t)%size].ispresent=1;
+		}
+	}
+}
+
+void search(struct hashing*h,int size,int key)
+{
+	int k, probes=1;
+	k=key%size;
+	if((h[k].data==key)&&(h[k].ispresent==1))
+		cout<<"found at position : "<<k<<"  no.of probes : "<<probes<<endl;
+	else
+	{
+		int t=1;
+		while((h[(k+t)%size].data!=key)&&(t<size))      //IF NOT FOUND SEARCH FOR ONE LOOP IN HASH TABLE
+		{
+			t=t+1;
+			probes=probes+1;
+		}
+		if(t==size) cout<<"sorry not found"<<endl;
+		else
+		{
+			if (h[(k+t)%size].ispresent==1)
+				cout<<"found at position : "<<(k+t)%size<<"  no.of probes : "<<probes<<endl;
+	       	else
+				cout<<"already deleted"<<endl;
+		}
+	}
+
+}
+void del(struct hashing *h,int size,int key)
+{
+	int k;
+	k=key%size;
+	if(h[k].data==key) h[k].ispresent=0;                           //IF FOUND DELETE AND MAKE ISPRESENT ZERO
+	else
+	{
+		int t=1;
+		while((h[(k+t)%size].data!=key)&&(t<size))  t=t+1;
+		if(t==size) cout<<"SORRY NOT FOUND"<<endl;
+		else
+		{
+			if (h[(k+t)%size].ispresent==1)
+				h[(k+t)%size].ispresent=0;
+	       	else
+				cout<<"already deleted"<<endl;	           //FOUND BUT ISPRESENT IS '0' SO ALREADY DELETED
+		}
+	}
+
+}
+
+int main()
+{
+	struct hashing *h;
+	int size,element,choice,i;
+	cout<<"enter the size of the table:";
+	cin>>size;
+	h=new struct hashing[size];
+	for(i=0;i<size;i++) h[i].ispresent=0;
+	while(1)
+	{
+		cout<<"enter choice"<<endl;
+		cout<<"1.insert  2.search   3.delete  4.exit"<<endl;
+		cin>>choice;
+		switch(choice)
+		{
+			case 1:
+				cout<<"enter the element ";
+				cin>>element;                                         //INSERTION OF ELEMENT
+				insert(h,size,element);
+				break;
+			case 2:
+				cout<<"enter the element";
+				cin>>element;
+				search(h,size,element);                              //SEARCHING OF ELEMENT
+				break;
+			case 3:
+				cout<<"enter the element";              //DELETION OF ELEMTENTS
+				cin>>element;
+				del(h,size,element);
+				break;
+			case 4:
+				exit(0);
+            default: cout<<"enter the correct choice\n"<<endl;
+
+		}
+	}
+
+
+}

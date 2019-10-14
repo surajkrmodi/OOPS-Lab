@@ -1,0 +1,48 @@
+//Name: Suraj Kumar Modi
+//Roll.No:17CS8020
+//indenting the file
+#include<bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+	FILE *fr,*fw;                                                //two files:- original testfile.cpp and new file (fw)
+	int curl=0,i;                                       // counts '{' encountered so far
+	char c,char_old;                                               //variables to store current and previous character
+	fr=fopen("testfile.cpp","r");                                    //open original file in read only mode
+	fw=fopen("output.txt","w");                                //create a output in write only mode
+	while(!feof(fr))
+	{
+		c=getc(fr);                                                //reads the file ( one character at a time )
+		if(c=='{')
+		{
+			curl=curl+1;                                     //if '{' is encountered ,indent using newlines and calculated no. of spaces
+			putc('\n',fw);
+			for(i=1;i<curl;i++) putc('\t',fw);
+			putc(c,fw);
+			putc('\n',fw);
+			for(i=1;i<curl+1;i++) putc('\t',fw);
+
+		}
+		else if(c=='}')                                             //if '}' is encountered, indent using newlines, decreasing no. of spaces
+		{
+			putc('\n',fw);
+			for(i=1;i<curl;i++) putc('\t',fw);
+			putc(c,fw);
+			curl=curl-1;
+		}
+		else if((c=='\n') &&(char_old=='{')) continue;
+		else if(c=='\n')                                             //if '\n' is encountered, place the next line with proper no. of spaces
+		{
+			putc(c,fw);
+			for(i=1;i<curl+1;i++) putc('\t',fw);
+
+		}
+		else
+		putc(c,fw);                                                 //print the character in the output file
+		char_old=c;
+	}
+	fclose(fr);
+	fclose(fw);                                                     //close both files
+	cout<<"successfully executed\n"<<endl;
+}
