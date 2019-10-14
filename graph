@@ -1,0 +1,37 @@
+//Name: Suraj Kumar Modi
+//Roll.No:17CS8020
+//graph plotting
+
+#include<bits/stdc++.h>
+
+using namespace std;
+int main()
+{
+	float initial,final,i,trigo;
+	int j;
+	cout<<"enter the initial value :"<<endl;
+	cin>>initial;                                                              //takes input for range of values for which graph is to be plotted
+	cout<<"enter the final value:"<<endl;
+	cin>>final;
+
+	for(i=initial;i<=final;i=i+0.05)
+	{
+		trigo=cos(i);          // used here cos function                                            //change the function here to plot the function you want
+
+		if(trigo<0)
+		{
+
+			for(j=0;j<60-(-1*int(20*trigo));j++) cout<<" ";
+			for(j=0;j<(-1*int(20*trigo));j++) cout<<"*";
+			cout<<endl;
+		}
+		else
+		{
+			for(j=0;j<60;j++) cout<<" ";
+			for(j=0;j<int(20*trigo);j++) cout<<"*";
+			cout<<endl;
+		}
+	}
+
+
+}

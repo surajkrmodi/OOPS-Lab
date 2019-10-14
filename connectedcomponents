@@ -1,0 +1,56 @@
+//FIND ALL CONNECTED COMPONENTS OF A GRAPH
+
+
+//NAME- SURAJ KUMAR MODI
+//ROLL NUMBER- 17CS8020
+
+#include<iostream>
+using namespace std;
+
+
+//RECURSIVE FUNCTION OF DFS
+void dfs(int **adjacent_mat,int *visit,int size,int vertex)
+{
+	int j;
+	cout<<vertex<<"  ";                                          //CURRENT VERTEX
+	visit[vertex]=1;                                           //VISITED VERTEX MARKING AS '1'
+	for(j=0;j<size;j++)
+	{
+		// DFS FOR CONNECTED BUT UNVISTED VERTEX
+
+		if((visit[j]==0)&&(adjacent_mat[vertex][j]==1)) dfs(adjacent_mat,visit,size,j);
+	}
+
+}
+
+int main()
+{
+	int **adjacent_mat,vertices,i,k=1;
+	int *visit;
+	int v1,v2;                                                       //VARIABLES DECLARATION
+
+	FILE *f;
+	f=fopen("data.txt","r");
+	fscanf(f,"%d",&vertices);
+
+	adjacent_mat=new int* [vertices];                                      //DYNAMIC ALLOCATION
+	for(i=0;i<vertices;i++)
+		adjacent_mat[i]=new int[vertices];
+	while(!feof(f))
+	{                                                                //READING FROM FILE
+		fscanf(f,"%d %d",&v1,&v2);
+		adjacent_mat[v1][v2]=1;
+		adjacent_mat[v2][v1]=1;
+	}
+	fclose(f);
+	visit=new int[vertices];                                       //DYNAMIC ALLOCATION
+	for(i=0;i<vertices;i++)  visit[i]=0;
+	for(i=0;i<vertices;i++)
+		if(visit[i]==0)
+		{
+			cout<<"component "<<k<<"->>";
+			dfs(adjacent_mat,visit,vertices,i);
+			k=k+1;
+			cout<<endl;
+		}
+}
